@@ -1077,6 +1077,194 @@ class KnowledgeService {
     constructor() {
         this.dataList = [
             {
+                title: '观察者模式和发布订阅',
+                content: `
+        <h2>观察者模式</h2>
+        <p>观察者模式指的是一个对象（Subject）维持一系列依赖于它的对象（Observer），当有关状态发生变更时 Subject 对象则通知一系列 Observer 对象进行更新。</p>
+        <p>在观察者模式中，Subject 对象拥有添加、删除和通知一系列 Observer 的方法等等，而 Observer 对象拥有更新方法等等。</p>
+        <p>在 Subject 对象添加了一系列 Observer 对象之后，Subject 对象则维持着这一系列 Observer 对象，当有关状态发生变更时 Subject 对象则会通知这一系列 Observer 对象进行更新。</p>
+        <p>// 被观察者</p>
+        <p>class Subject{</p>
+        <p>&nbsp;&nbsp;constructor(name){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;this.name = name;</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;this.observers = []; //存放所有观察者</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;this.state = '天气晴朗';</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>&nbsp;&nbsp;// 接受观察者方法</p>
+        <p>&nbsp;&nbsp;attach(observer){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;this.observers.push(observer);</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>&nbsp;&nbsp;setState(newState){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;this.state = newState;</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;this.observers.forEach(it=>{</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it.update(newState);</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;})</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>}</p>
+        <p>// 观察者</p>
+        <p>class Observer{</p>
+        <p>&nbsp;&nbsp;constructor(name){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;this.name = name;</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>&nbsp;&nbsp;update(state){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;//每次被观察者数据发生变化这里都会更新</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;console.log(this.name)</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;console.log(state)</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>}</p>
+        <p>let sub = new Subject('男');</p>
+        <p>let o1 = new Observer('A');</p>
+        <p>let o2 = new Observer('B');</p>
+        <p>sub.attach(o1);</p>
+        <p>sub.attach(o2);</p>
+        <p>sub.setState('下雨了');</p>
+        <hr>
+        <h2>发布订阅</h2>
+        <p>发布订阅模式指的是希望接收通知的对象（Subscriber）基于一个主题通过自定义事件订阅主题，被激活事件的对象（Publisher）通过发布主题事件的方式通知各个订阅该主题的 Subscriber 对象。</p>
+        // 发布订阅 发布和订阅没有关系 中间通过数组进行关联
+        function Events(){
+          this.callbacks = []; //接收很多函数
+          this.results = [];
+        }
+        // 订阅
+        Events.prototype.on = function(callback){ //传一个函数
+          this.callbacks.push(callback);
+        }
+        // 发布
+        Events.prototype.emit = function(data){
+          this.results.push(data);
+          // 发布后，许多之前的函数依次执行
+          this.callbacks.forEach(cb=>{
+            cb(this.results);//cb是callbacks中的每一个参数，每一个回调函数，回调函数又将this.results作为参数
+          })
+        }
+        let e = new Events();
+        // on传了一个函数作为参数
+        e.on(function(res){
+          // if(res.length == 2){
+            console.log(res)
+          // }
+        })
+        e.emit();
+      `
+            },
+            {
+                title: 'promise、await和定时器的执行顺序',
+                content: `
+      <h2>Promise内的任务为立即执行任务，也可以理解为同步任务。而then方法中的任务是微任务，会放在微任务列表中</h2>
+      <h2>async函数主要通过await关键字实现异步任务同步写法。如果没有await关键字，那么async函数跟普通函数没区别</h2>
+      <h2>setTimeout函数是一个宏任务，需要等到script整体的宏任务执行完再执行</h2>
+      <h2>执行顺序：</h2>
+      <p>1、立即执行函数和代码</p>
+      <p>2、微任务</p>
+      <p>3、宏任务（script和定时器）</p>
+      `
+            },
+            {
+                title: '数据类型',
+                content: `
+        <h2>原始数据类型7种：</h2>
+        <p>string、number、boolean、null、undefined、symbol、bigint</p>
+        <h2>引用数据类型object：</h2>
+        <p>object、array、function ... </p>
+      `
+            },
+            {
+                title: 'angular的生命周期',
+                content: `
+      <p>ngOnChanges：组件输入属性发生变化时调用，首次在constructor之前调用，会触发多次</p>
+      <p>ngOnInit：只有组件初始化时调用一次，可以安全的使用组件中的方法</p>
+      <p>ngDoCheck：脏值检查，通常和ngOnChanges不会同时出现</p>
+      <p>ngAfterContentInit：组件内容初始化后调用</p>
+      <p>ngAfterContentChecked：组件内容每次检查后调用</p>
+      <p>AfterViewInit：在组件视图初始化后调用，在这里安全的使用@ViewChild引用的元素</p>
+      <p>ngAfterViewChecked：在组件视图每次检查后调用</p>
+      <p>ngOnDestory：组件销毁</p>
+      `
+            },
+            {
+                title: 'angular组件和指令的区别',
+                content: `
+      
+      `
+            },
+            {
+                title: 'angular路由传参的几种方式',
+                content: `
+      
+      `
+            },
+            {
+                title: 'angular的好处',
+                content: `
+      <h2>Angular简化了MVC</h2>
+      <p>模型 - 视图 - 控制器（MVC）体系结构将应用程序分解为三个不同的组件，是开发面向用户的应用程序的常用策略。大多数Web开发框架都要求开发人员通过分别为每个组件设计和编写代码来实现MVC架构，然后编写更多代码将组件连接在一起。</p>
+      <p>Angular通过自动将不同的组件放在一起来简化和简化此过程，从而节省您的时间。因此，尽管Angular当然不是唯一支持MVC架构的框架（它也可以通过Vue和React完成，但是在这种情况下将组件放在一起需要更多的努力），它使得构建它比其他框架更容易和更快MVC架构。</p>
+      <h2>大Angular生态系统</h2>
+      <p>在技​​术生态系统方面，Angular更大更好。拥有庞大的个人和公司社区的技术更容易使用，因为支持很多，兼容性很普遍，并且技术被放弃的风险很低。</p>
+      <p>Angular拥有所有这些优势。它由Google的专门团队支持和构建，Google本身使用Angular。该公司还提供了Angular长期支持（LTS）。这意味着该技术巨头计划坚持使用Angular，并在未来进行扩展。</p>
+      <p>Angular生态系统的优势并不仅限于谷歌。Angular还拥有一个非常庞大的用户社区，他们愿意互相支持。这个社区提供了另一个支持和活力的来源。</p>
+      <p>就市场份额而言，Angular 似乎在JavaScript框架中位居第二，仅次于React，但在Vue面前。对于它的价值，Angular采用率似乎比React的增长速度更快（尽管Vue增长最快），因此Angular可能超越React成为不久的将来最受欢迎的框架。</p>
+      <h2>Angular Universal和服务器端呈现</h2>
+      <p>服务器端呈现是一种允许Web服务器生成通常由客户端构建的内容（换句话说，最终用户的浏览器）的技术。由于多种原因，服务器端呈现很有用。它使网页抓取工具可以轻松访问网页。它还提高了性能，尤其是在移动和低功耗设备上，由于资源不足，这些设备很难在客户端快速呈现内容。并且通过促进更快的页面加载时间来帮助用户满意。</p>
+      <p>常规Angular应用程序在浏览器中执行，并在DOM中呈现页面以响应用户的操作。但是，Angular社区提供了一个用于更改此行为的简单工具：Angular Universal，它允许通过服务器端呈现在服务器上生成静态应用程序页面。通过将Angular Universal与应用程序集成，可以生成服务器端页面并响应来自浏览器的请求。</p>
+      <p>使用Vue，React和大多数其他JavaScript框架进行服务器端渲染也是可能的，但它涉及更多步骤。使用Angular Universal，您只需打包您的应用程序以在服务器端运行并使用Universal进行部署。</p>
+      <h2>Angular材料设计</h2>
+      <p>从Angular 5.0开始，Angular功能在其框架中集成了对Material Design的支持。Material Design是一个开源工具集，可帮助开发人员快速构建有吸引力的界面。它简化了在Web，移动和桌面上工作的现代UI组件的创建。</p>
+      <p>Material Design主题和模板已预先配置为与Angular一起使用，使其易于集成到Angular项目中。此外，Material Design组件可以与Angular上的服务器端呈现结合使用，从而可以轻松地将它们合并到基于Angular的应用程序中，该应用程序利用上述服务器端性能改进。</p>
+      <p>大多数其他框架也适用于Material Design，但并非所有框架都为其提供官方的集成支持。</p>
+      <h2>Angular下的层次依赖注入</h2>
+      <p>Angular提供了分层依赖注入，这对于为应用程序组装数据服务特别有用。在分层依赖注入中，有一个与app的组件树平行的注入器树。通过依赖注入，类会从外部源请求依赖性，而不是自己创建依赖项。这可以提高性能。它还允许Web开发人员在外部导入依赖项而不是在应用程序中配置它们，从而简化了Web开发人员的工作。Angular在实例化时为类提供声明的依赖项。Angular依赖注入框架允许用户从可注入服务类提供数据，该服务类在其自己的文件中单独定义。服务所需的任何依赖项都可以“注入”其构造函数，并在运行时“注入”对象。这允许在需要时覆盖注入的对象，并在整个应用程序中提供一致性。</p>
+      <h2>Angular的模块化设计</h2>
+      <p>在Angular中，一切都被组织成模块，从服务到指令的所有内容都必须组织成一个或多个模块。模块通过将代码划分为功能和可重用的块来增加代码的可重用性。它们还极大地简化了组织中的分工，以及代码的一致性和维护。</p>
+      <p>可以肯定的是，Angular在其模块化设计中绝不是独一无二的。模块化在许多现代编程语言和框架中很常见。</p>
+      <p>不过，我认为Angular特别模块化，因为不仅可以使用模块化架构来配置和部署基本代码组件（如函数），还可以使用Angular构建的任何对象。这种模块化在当今的微服务和分布式架构时代尤其有利，它们更容易与具有模块化设计的应用程序集成，因此可以作为跨大型基础架构的不同服务部分进行部署。</p>
+      <p>在大多数方面，Vue提供与Angular相同的模块化功能。React并不如此，因为React没有将模块化设计作为主要目标.。</p>
+      <p>(banq注：React是函数式风格，这与面向对象的模块化视角不同，管道化本身也是一种可组装的动态模块，这里有作者的偏见！)</p>
+      <h2>Angular单元测试</h2>
+      <p>Angular已准备好进行单元测试。单元测试是开发人员可以在软件交付管道中执行的第一类测试之一，以确保其代码满足预期的期望。单元测试允许开发人员在将新功能添加到应用程序的主代码库之前对其进行彻底测试。这样，可以快速检测到错误并与主代码库隔离，这使得它们更容易解决。</p>
+      <p>理论上，用任何编程语言编写的代码都可以进行单元测试。但是，单元测试兼容性是Angular的明确设计目标，这意味着开发人员不必修改他们的代码或使用特殊的测试工具来使用Angular进行单元测试。</p>
+      <h2>Angular使用TypeScript基础</h2>
+      <p>Angular应用程序是使用TypeScript构建的，TypeScript是JavaScript的超集。这意味着您可以将ES5或ES2015 + JavaScript代码插入.ts文件，它将完美运行。这也意味着只要在构建期间创建了正确的映射文件，就可以在浏览器或编辑器中直接调试TypeScript代码。</p>
+      <p>这不仅有助于简化您的工作流程并帮助您避免将文件从一种格式转换为另一种格式，而且因为使用TypeScript可以提高您及早发现错误的几率。请记住，如果您对TypeScript不满意，可以选择退出Angular中特定于TypeScript的功能。</p>
+      <p>Vue对TypeScript的支持有限（尽管Vue开发人员表示将在即将发布的Vue 3.0版本中进行更改）。对于React，它可以与TypeScript一起使用，但只有在将它添加到项目中时才能使用; TypeScript没有内置到React中。 </p>
+      <h2>不可否认，并非上述所有功能都是Angular独有的。您可以在其他Web框架中找到其中一些。但是当你将所有这些功能放在一起时，Angular因其多功能性，模块化和层次依赖注入而脱颖而出。如果这些特征对您的项目很重要，那么Angular可能最适合您的编程需求。</h2>
+      `
+            },
+            {
+                title: '==和===的区别，什么情况下用==',
+                content: `
+      
+      `
+            },
+            {
+                title: '数组方法，字符串方法',
+                content: `
+      
+      `
+            },
+            {
+                title: '常用的es6功能',
+                content: `
+      <h2>Set() - 数组去重</h2>
+      <p>new Set([1,2,1,3,2,4,2,3]) // {1, 2, 3, 4}</p>
+      <p>Array.from(new Set([1,2,1,3,2,4,2,3])) // [1, 2, 3, 4]</p>
+      <p>Array.from()方法从一个类似数组或可迭代对象创建一个新的，浅拷贝的数组实例</p>
+      `
+            },
+            {
+                title: 'null和undefined的区别',
+                content: `
+      
+      `
+            },
+            {
+                title: '',
+                content: `
+      
+      `
+            },
+            {
                 title: 'typeof和instanceof类型判断',
                 content: `
         <h2>typeof对于原始类型来说，除了null都可以显示正确的类型</h2>
@@ -1339,7 +1527,186 @@ class KnowledgeService {
             {
                 title: '手写call、apply和bind函数',
                 content: `
-        
+        <h2>不传入第一个参数，那么上下文默认为window</h2>
+        <h2>改变了this指向，让新的对象可以执行该函数，并能接受参数</h2>
+        <h2>实现call：</h2>
+        <p>首先context为可选参数，如果不传默认上下文为window</p>
+        <p>接下来给context创建一个fn属性，并将值设置为需要调用的函数</p>
+        <p>因为call可以传入多个参数作为调用函数的参数，所以需要将参数剥离出来</p>
+        <p>然后调用函数并将对象上的函数删除</p>
+        <p>Function.prototype.myCall = function(context){</p>
+        <p>&nbsp;&nbsp;if(typeof this !== 'function'){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;throw new TypeError('Error);</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>}</p>
+        <p> context = context || window;</p>
+        <p> context.fn = this;</p>
+        <p> const args = [...arguments].slice(1);</p>
+        <p> const result = context.fn(...args);</p>
+        <p> delete context.fn;</p>
+        <p> return result;</p>
+        <h2>实现apply：</h2>
+        <p> Function.prototype.myApply = function(context){</p>
+        <p> &nbsp;&nbsp;if(typeof this !== 'function'){</p>
+        <p> &nbsp;&nbsp;&nbsp;&nbsp;throw new TypeError('Error');</p>
+        <p> &nbsp;&nbsp;}</p>
+        <p> }</p>
+        <p> context = context || window;</p>
+        <p> context.fn = this;</p>
+        <p> let result;</p>
+        <p> // 处理参数和call有区别</p>
+        <p> if(arguments[1]){</p>
+        <p> &nbsp;&nbsp;result = context.fn(...arguments[1]);</p>
+        <p> }else{</p>
+        <p> &nbsp;&nbsp;result = context.fn();</p>
+        <p> }</p>
+        <p> delete context.fn;</p>
+        <p> return result;</p>
+        <h2>bind实现：</h2>
+        <p>bind是实现对比其他两个函数略微的复杂了一些，因为bind需要返回一个函数，需要判断一些边界问题</p>
+        <p>bind返回了一个函数，对于函数来说有两种方式调用，一种是直接调用，一种是通过new的方式</p>
+        <p>对于直接调用来说，这里选择了apply的方式实现，但是对于参数需要注意以下情况</p>
+        <p>因为bind可以实现类似这样的代码 f.bind(obj,1)(2)，所以我们需要将两边的参数拼接起来，于是就有了这样的实现 args.concat(...arguments)</p>
+        <p>通过new的方式，不会被任何方式改变this，所以我们需要忽略传入的this</p>
+        <p>Function.prototype.myApply = function(context){</p>
+        <p>&nbsp;&nbsp;if(typeof this !== 'function'){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;throw new TypeError('Error');</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>}</p>
+        <p>const _this = this;</p>
+        <p>const args = [...arguments].slice(1);</p>
+        <p>// 返回一个函数</p>
+        <p>return function F(){</p>
+        <p>&nbsp;&nbsp;// 因为返回了一个函数，我们可以new F()，所以需要判断</p>
+        <p>&nbsp;&nbsp;if(this instanceof F){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;return new _this(...args,...arguments);</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>&nbsp;&nbsp;return _this.apply(context,args.concat(...arguments))</p>
+        <p>}</p>
+      `
+            },
+            {
+                title: 'new',
+                content: `
+        <h2>new的原理是什么？通过new的方式创建对象和通过字面量创建有什么区别？</h2>
+        </p>在调用new的过程中会发生4件事：</p>
+        </p>&nbsp;&nbsp;1、新生成了一个对象</p>
+        </p>&nbsp;&nbsp;2、链接到原型</p>
+        </p>&nbsp;&nbsp;3、绑定this</p>
+        </p>&nbsp;&nbsp;4、返回新对象</p>
+        <h2>实现一个new：</h2>
+        <p>&nbsp;&nbsp;1、创建一个空对象</p>
+        <p>&nbsp;&nbsp;2、获取构造函数</p>
+        <p>&nbsp;&nbsp;3、设置空对象的原型</p>
+        <p>&nbsp;&nbsp;4、绑定this并执行构造函数</p>
+        <p>&nbsp;&nbsp;5、确保返回值为对象</p>
+        <p>&nbsp;&nbsp;function cerate(){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;let obj = {};</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;let Con = [].shift.call(arguments);</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;obj._proto_ = Con.prototype;</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;let result = Con.apply(obj,arguments);</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;return result instanceof Object ? result : obj;</p>
+        <p>&nbsp;&nbsp;}
+        <p>对于对象来说，其实都是通过new产生的，无论是function Foo() 还是 let {a:1}</p>
+        <p>对于创建一个对象来说，更推荐使用字面量的方式创建对象（无论性能上还是可读性），因为使用new Object()的方式创建对象需要通过作用域一层层找到Object，但是使用字面量的方式就没有这个问题</p>
+        <p>function Foo(){</p>
+        <p>&nbsp;&nbsp;// function 就是个语法糖，内部等同于 new Function()</p>
+        <p>}</p>
+        <p>let a = {b:1};//这个字面量内部也是使用了new Object()</p>
+      `
+            }, {
+                title: 'instanceof的原理',
+                content: `
+        <h2>instanceof可以正确的判断对象的类型，因为内部机制是通过判断对象的原型链中是不是能找到类型的prototype</h2>
+        <h2>实现instanceof：</h2>
+        <p>&nbsp;&nbsp;首先获取类型的原型</p>
+        <p>&nbsp;&nbsp;然后获得对象的原型</p>
+        <p>&nbsp;&nbsp;一直循环判断对象的原型是否等于类型的原型，知道对象原型为null，因为原型链最终为null</p>
+        <p>function myInstanceof(left,right){</p>
+        <p>&nbsp;&nbsp;let prototype = right.prototype;</p>
+        <p>&nbsp;&nbsp;left = left._proto_;</p>
+        <p>&nbsp;&nbsp;while(true){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;if(left === null || left === undefined){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;return false;</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>&nbsp;&nbsp;if(prototype === left){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;return true;</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>&nbsp;&nbsp;left = left._prpto_;</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>}</p>
+      `
+            }, {
+                title: '跨域',
+                content: `
+        <h2>什么是跨域？为什么浏览器要使用同源策略？有几种方式可以解决跨域问题？了解预检请求？</h2>
+        <p>因为浏览器出于安全考虑，有同源策略。如果协议、域名或者端口有一个不同，就是跨域，ajax请求会失败</p>
+        <p>那么是出于什么安全考虑才会引入这种机制呢？其实主要是用来防止CSRF攻击的，CSRF攻击是利用用户的登录态发起恶意请求</p>
+        <p>在没有同源策略的情况下，A网站可以被任意其他来源的ajax访问到内容。如果你当前A网站还存在登录态，那么对方就可以通过ajax获得你的任何信息。当然跨域并不能完全阻止CSRF</p>
+        <p>请求跨域了，那么请求到底发出去没有？请求必然是发出去了，但是浏览器拦截了响应。你可能会疑问明明通过表单的方式可以发起跨域请求，为什么ajax就不会。归根结底，跨域是为了阻止用户读取到另一个域名下的内容，ajax可以获取响应，浏览器认为这不安全，所以拦截了响应。但是表单并不会获取新的内容，所以可以发起跨域请求。同时也说明了跨域并不能完全阻止CSRF，因为毕竟请求发出去了</p>
+        <h2>解决跨域的几种方式：</h2>
+        <p>JSONP：</p>
+        <p>JSONP的原理很简单，就是利用<script>标签没有跨域限制的漏洞。通过script标签指向一个需要访问的地址并提供一个回调函数来接收数据</p>
+        <p><script src="http://dome/api?param1=a&param2=b&callback=jsonp"></script></p>
+        <p><script></p>
+        <p>&nbsp;&nbsp;function jsonp(data){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;console.log(data)</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p></script></p>
+        <p>JSONP使用简单且兼容性不错，但是只限于get请求</p>
+        <p>在开发中可能会遇到多个JSONP请求的回调函数名是相同的，这时候就需要自己封装一个JSONP</p>
+        <p>function jsonp(url,jsonpCallback,success){</p>
+        <p>&nbsp;&nbsp;let script = document.createElement('script');</p>
+        <p>&nbsp;&nbsp;script.src = url;</p>
+        <p>&nbsp;&nbsp;script.async = true;</p>
+        <p>&nbsp;&nbsp;script.type = 'text/javascript';</p>
+        <p>&nbsp;&nbsp;window[jsonpCallback] = function(data){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;success && success(data);</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>&nbsp;&nbsp;document.body.appendChild(srcipt);</p>
+        <p>}</p>
+        <p>jsonp('http://dome/api','callback',function(value){</p>
+        <p>&nbsp;&nbsp;console.log(value)</p>
+        <p>});</p>
+        <p>localhost和127.0.0.1虽然都指向是本机，但也属于跨域。</p>
+      `
+            },
+            {
+                title: '性能优化',
+                content: `
+        <p>1、图片编码优化，尽量使用svg和字体图标</p>
+        <p>2、图片懒加载</p>
+        <p>3、模块、组件按需加载</p>
+        <p>4、防抖（禁止连续多次重复调用接口）</p>
+        <p>5、代码优化（缩小体积）</p>
+        <p>6、css样式优化，避免使用table布局（table要等其他的内容完全下载之后才会显示，比div+css慢），避免设置多层内联样式，避免使用css表达式calc()</p>
+        <p>7、减少多DOM的操作</p>
+        <p>8、减少http请求</p>
+        <p></p>
+      `
+            },
+            {
+                title: 'cookies，sessionStorage和localStorage的区别',
+                content: `
+        <h2>sessionstorage(session)中的数据，这些数据只有在同一个会话中的页面才能访问并且当会话结束后数据也随之销毁，因为sessionStorage不是一种持久化的本地存储，仅仅是会话级别的存储。而localStorage用于持久化的本地存储，除非主动删除数据，否则数据是永远不会过期的</h2>
+        <p>web storage和cookie的区别：</p>
+        <p>web storage和cookie相似，区别是它是为了更大容量存储设计的。Cookie的大小是受限的，并且每次你请求一个新的页面的时候Cookie都会被发送过去，这样无形中浪费了带宽，另外cookie还需要指定作用域，不可以跨域使用。除此之外，web storage拥有setItem，getItem，removeItem，clear等方法，不像cookie需要前端开发者自己封装setCookie，getCookie。但是cookie也是不可或缺的，cookie的作用是与服务器进行交互，作为HTTP规范的一部分而存在，而web storage仅仅是为了在本地存储数据而生。</p>
+      `
+            },
+            {
+                title: 'CSS中link和@import的区别',
+                content: `
+        <h2>link属于HTML标签，而@import是css中提供的。在页面加载的时候，link会同时被加载，而@import引用的css会在页面加载完成后才会加载引用的css。link引入样式的权重大于@import的引用（@import是将引用的样式导入到当前的页面中）</h2>
+      `
+            },
+            {
+                title: '水平居中flex',
+                content: `
+        <p>div{</p>
+        <p>&nbsp;&nbsp;display:flex;</p>
+        <p>&nbsp;&nbsp;justify-content:center;</p>
+        <p>&nbsp;&nbsp;align-items:center;</p>
+        <p>}</p>
       `
             }
         ];
